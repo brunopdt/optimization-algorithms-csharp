@@ -8,12 +8,16 @@ namespace desafio_rotas.Controllers
     public class RoutesController : ControllerBase
     {
         [HttpGet]
-        public int[] getRoutes() => DataApplication.transporter.routes;
+        public List<int[]> getRoutes() => DataApplication.baseRoutes;
 
         [HttpPost("/generate")]
-        public int[] generateRoutes(int quantRoutes, double dispersion) => DataApplication.transporter.generateRoutes(quantRoutes, dispersion);
+        public List<int[]> generateRoutes(int quantRoutes, int sizeSet,
+        double dispersion)
+        {
+            DataApplication.baseRoutes = ProblemGenerator.generateRoutes(quantRoutes, sizeSet, dispersion);
+            return DataApplication.baseRoutes;
 
-        [HttpPost]
-        public int[] addRoutes([FromBody] int[] routes) => DataApplication.transporter.addRoutes(routes);
+        }
+
     }
 }
