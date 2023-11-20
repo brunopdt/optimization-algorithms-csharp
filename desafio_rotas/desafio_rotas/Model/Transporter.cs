@@ -5,15 +5,16 @@ namespace desafio_rotas.Model
     public class Transporter
     {
         public static double tolerance { get; } = 0.1;
+        public double averageRoutes { get; set; }
+        public double sumRoutes { get; set; }
         public int[] routes { get; set; }
         public List<Truck> listTruck { get; set; }
-        public Transporter() { 
+        public Transporter(int quantityTrucks, int[] routes) { 
             this.listTruck = new List<Truck>();
-            this.routes = ProblemGenerator.generateRoutes(10, 1);
+            addRoutes(routes);
+            addTruck(quantityTrucks);
         }
-
-
-        public List<Truck> addTruck(int quantity) {
+        private List<Truck> addTruck(int quantity) {
             this.listTruck = new List<Truck>();
             for (int i=0; i< quantity; i++)
             {
@@ -21,18 +22,14 @@ namespace desafio_rotas.Model
             }
             return this.listTruck;
         }
-        public Truck getTruck(int key) => this.listTruck[key];
-        public int[] generateRoutes(int quantRoutes, double dispersion)
-        {
-            this.routes = ProblemGenerator.generateRoutes(quantRoutes, dispersion);
-            return this.routes;
-        }
         public int[] addRoutes(int[] routes)
         {
-            this.routes = routes;
+           
+            this.averageRoutes = this.getAverageRoutes();
+            this.sumRoutes = this.getSumRoutes();
             return this.routes;
         }
-        public List<Truck> getTrucks() => this.listTruck;
-        public double getAverageRoutes() => this.routes.Average();
+        private double getAverageRoutes() => this.routes.Average();
+        private double getSumRoutes() => this.routes.Sum();
     }
 }
