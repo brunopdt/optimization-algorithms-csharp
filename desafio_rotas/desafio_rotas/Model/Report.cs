@@ -5,7 +5,7 @@ namespace desafio_rotas.Model
     public class Report
     {
         public string reason { get; }
-        public string behavior { get; }
+        public string behavior { get; } 
         public string algorithm { get; }
         public DateTime dateTime { get; }
         public double averageTime { get; set; }
