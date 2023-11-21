@@ -7,14 +7,22 @@ namespace desafio_rotas.Model
         public string reason { get; }
         public string behavior { get; }
         public string algorithm { get; }
+        public DateTime dateTime { get; }
+        public double averageTime { get; set; }
+
         public List<ReportResult> results { get; set; }
         public Report(string algorithm, string reason, string behavior) { 
             this.reason = reason;
             this.algorithm = algorithm;
             this.behavior = behavior;
+            this.dateTime = DateTime.Now;
             results = new();
         }
 
-        public void addResult(ReportResult result) => this.results.Add(result);
+        public void addResult(ReportResult result)
+        {
+            this.results.Add(result);
+            this.averageTime = results.Average(x => x.timeSpentMS);
+        }
     }   
 }

@@ -4,14 +4,15 @@ namespace desafio_rotas.Model
 {
     public class ReportResult
     {
-        public DateTime dateTime { get; }
         public double timeSpentMS { get; set; }
+        public Transporter transporter { get; set; }
+
         private Stopwatch timer;
 
-        ReportResult()
+        public ReportResult(Transporter transporter)
         {
-            this.dateTime = DateTime.Now;
             this.timer = new Stopwatch();
+            this.transporter = transporter;
         }
         public void startTime() => timer.Start();
         public void endTime()
