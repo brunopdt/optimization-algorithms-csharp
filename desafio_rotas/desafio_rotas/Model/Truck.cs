@@ -2,16 +2,16 @@
 {
     public class Truck
     {
-        public int[] routes { get; set; }
+        public List<int> routes { get; set; }
         public int totalRoute { get; set; }
         public Truck()
         {
-            this.routes = new int[0];
+            this.routes = new();
         }
 
-        public void addRoutes(int[] routes)
+        public void addRoutes(int route)
         {
-            this.routes = routes;
+            this.routes.Add(route);
             sumRoutes();
         }
         
