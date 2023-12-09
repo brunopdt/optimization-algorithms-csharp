@@ -8,13 +8,13 @@ namespace desafio_rotas.Controllers
     [Route("algorithm")]
     public class Algorithm : ControllerBase
     {
-        [HttpGet("/divideAndConquer")]
+        [HttpGet("/divide-and-conquer")]
         public void divideAndConquer()
         {
         }
 
         [HttpPost("/greedy")]
-        public List<ReportResult> Greedy([FromBody] GreedyAlgorithmDTO dto)
+        public Report Greedy([FromBody] GreedyAlgorithmDTO dto)
         {
             Transporter transporter;
             Greedy greedy;
@@ -34,16 +34,16 @@ namespace desafio_rotas.Controllers
             });
             DataApplication.reports.Add(report);
 
-            return report.results;
+            return report;
         }
 
-        [HttpPost("/dynamicprogramming")]
-        public List<ReportResult> DynamicProgramming([FromBody] DynamicProgrammingDTO dto)
+        [HttpPost("/dynamic-programming")]
+        public Report DynamicProgramming([FromBody] DynamicProgrammingDTO dto)
         {
             Transporter transporter;
             DynamicProgramming dynamicProgramming;
             ReportResult currentReportResult;
-            Report report = new("Algoritmo Programação dinamica", "", "Escolhe a melhor opção no momento da iteração, entretanto, não garante o resultado ótimo");
+            Report report = new("Algoritmo Programação dinamica", "", "Cria uma tabela com os possíveis resultados e retorna o resultado ótimo");
 
             DataApplication.baseRoutes.ForEach(route =>
             {
@@ -54,7 +54,7 @@ namespace desafio_rotas.Controllers
             });
             DataApplication.reports.Add(report);
 
-            return report.results;
+            return report;
         }
     }
 }

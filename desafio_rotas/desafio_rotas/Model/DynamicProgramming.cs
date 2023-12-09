@@ -1,122 +1,127 @@
-﻿namespace desafio_rotas.Model
+﻿using desafio_rotas.Model;
+
+namespace desafio_rotas.Model
 {
     public class DynamicProgramming(Transporter transporter)
     {
         private Transporter transporter = transporter;
         private ReportResult reportResult = new ReportResult(transporter);
-        private List<int> rotasPossiveis = new(); 
+        private List<int> possibleRoutes = new(); 
 
-        private void cloneRoutes() => transporter.routes.ForEach(route => rotasPossiveis.Add(route));
-        private void CalcularResultado(List<int> rotasPossiveis, int[] limitesTabela)
+        private void CloneRoutesFromTransporter() => transporter.routes.ForEach(route => possibleRoutes.Add(route));
+        private void CalculateResults(List<int> possibleRoutes, int[] dynamicTableLimits)
         {
             for (int i = 0; i < transporter.trucks.Count; i++)
             {
-                transporter.trucks[i].AddRoute(CalcularRotasParaCadaCaminhao(rotasPossiveis, limitesTabela));
+                transporter.trucks[i].AddRoute(CalculateRoutesToEachTruck(possibleRoutes, dynamicTableLimits));
             }
         }
-        private List<int> EncontrarRotasSolucao(int[,] tabela, List<int> rotas)
+
+        private List<int> FindRoutes(int[,] dynamicTable, List<int> routes)
         {
-            List<int> rotasSolucao = new List<int>();
-            int linha = tabela.GetLength(0) - 1;
-            int coluna = tabela.GetLength(1) - 1;
+            List<int> solutionRoutes = new List<int>();
+            int row = dynamicTable.GetLength(0) - 1;
+            int column = dynamicTable.GetLength(1) - 1;
 
 
-            while (linha >= 0 && coluna > 0)
+            while (row >= 0 && column > 0)
             {
-                if (linha == 0 && rotas[linha] == tabela[linha, coluna])
+                if (row == 0 && routes[row] == dynamicTable[row, column])
                 {
-                    rotasSolucao.Add(rotas[linha]);
+                    solutionRoutes.Add(routes[row]);
                     break;
                 }
-                else if (linha == 0)
+                else if (row == 0)
                 {
                     break;
                 }
-                else if (tabela[linha, coluna] != tabela[linha - 1, coluna])
+                else if (dynamicTable[row, column] != dynamicTable[row - 1, column])
                 {
-                    rotasSolucao.Add(rotas[linha]);
-                    coluna -= rotas[linha];
-                    linha -= 1;
+                    solutionRoutes.Add(routes[row]);
+                    column -= routes[row];
+                    row -= 1;
                 }
                 else
                 {
-                    linha -= 1;
+                    row -= 1;
                 }
             }
 
-            return rotasSolucao;
+            return solutionRoutes;
         }
-        private int[] CalcularLimitesTabela()
+
+        private int[] DefineDynamicTableLimits()
         {
-            double limiteSuperiorDouble = (transporter.sumRoutes / transporter.trucks.Count) * (1 + transporter.tolerance);
-            int limiteSuperior = (int)Math.Floor(limiteSuperiorDouble);
-            int[] limitesTabela = new int[limiteSuperior];
-            for (int i = 0; i < limiteSuperior; i++)
+            double floatUpperLimit = (transporter.sumRoutes / transporter.trucks.Count) * (1 + transporter.tolerance);
+            int upperLimit = (int)Math.Floor(floatUpperLimit);
+            int[] dynamicTableLimits = new int[upperLimit];
+            for (int i = 0; i < upperLimit; i++)
             {
-                limitesTabela[i] = i;
+                dynamicTableLimits[i] = i;
             }
-            return limitesTabela;
+            return dynamicTableLimits;
         }
-        private int[] RemoverRotasUtilizadas(List<int> rotasPossiveis, List<int> rotasSolucao)
+
+        private int[] RemoveUsedRoutes(List<int> possibleRoutes, List<int> solutionRoutes)
         {
-            foreach (int rota in rotasSolucao)
+            foreach (int currentRoute in solutionRoutes)
             {
-                int index = rotasPossiveis.FindIndex(r => r == rota);
+                int index = possibleRoutes.FindIndex(r => r == currentRoute);
                 if (index != -1)
                 {
-                    rotasPossiveis.RemoveAt(index);
+                    possibleRoutes.RemoveAt(index);
                 }
             }
 
-            // Converte a lista de int para um array de int
-            int[] limitesTabela = rotasPossiveis.ToArray();
+            int[] dynamicTableLimits = possibleRoutes.ToArray();
 
-            return limitesTabela;
+            return dynamicTableLimits;
         }
-        private List<int> CalcularRotasParaCadaCaminhao(List<int> rotasPossiveis, int[] limitesTabela)
+
+        private List<int> CalculateRoutesToEachTruck(List<int> possibleRoutes, int[] dynamicTableLimits)
         {
 
-            List<int> rotasSolucao;
+            List<int> solutionRoutes;
 
 
-            int[,] tabela = new int[rotasPossiveis.Count, limitesTabela.Length];
+            int[,] dynamicTable = new int[possibleRoutes.Count, dynamicTableLimits.Length];
 
-            for (int i = 0; i < rotasPossiveis.Count; i++)
+            for (int i = 0; i < possibleRoutes.Count; i++)
             {
-                for (int j = 0; j < limitesTabela.Length; j++)
+                for (int j = 0; j < dynamicTableLimits.Length; j++)
                 {
-                    if ((i == 0 && rotasPossiveis[i] > j) || j == 0)
+                    if ((i == 0 && possibleRoutes[i] > j) || j == 0)
                     {
-                        tabela[i, j] = 0;
+                        dynamicTable[i, j] = 0;
                     }
-                    else if (i == 0 && rotasPossiveis[i] <= j)
+                    else if (i == 0 && possibleRoutes[i] <= j)
                     {
-                        tabela[i, j] = rotasPossiveis[i];
+                        dynamicTable[i, j] = possibleRoutes[i];
                     }
-                    else if (rotasPossiveis[i] <= limitesTabela[j])
+                    else if (possibleRoutes[i] <= dynamicTableLimits[j])
                     {
-                        tabela[i, j] = Math.Max(tabela[i - 1, j], rotasPossiveis[i] + tabela[i - 1, j - rotasPossiveis[i]]);
+                        dynamicTable[i, j] = Math.Max(dynamicTable[i - 1, j], possibleRoutes[i] + dynamicTable[i - 1, j - possibleRoutes[i]]);
                     }
                     else
                     {
-                        tabela[i, j] = tabela[i - 1, j];
+                        dynamicTable[i, j] = dynamicTable[i - 1, j];
                     }
                 }
             }
 
-            rotasSolucao = EncontrarRotasSolucao(tabela, rotasPossiveis);
+            solutionRoutes = FindRoutes(dynamicTable, possibleRoutes);
 
-            RemoverRotasUtilizadas(rotasPossiveis, rotasSolucao);
+            RemoveUsedRoutes(possibleRoutes, solutionRoutes);
 
-            return rotasSolucao;
+            return solutionRoutes;
         }
 
         public ReportResult RunMethod()
         {
             reportResult.startTime();
-            int[] limitesTabela = CalcularLimitesTabela();
-            cloneRoutes();
-            CalcularResultado(rotasPossiveis, limitesTabela);
+            int[] dynamicTableLimits = DefineDynamicTableLimits();
+            CloneRoutesFromTransporter();
+            CalculateResults(possibleRoutes, dynamicTableLimits);
             reportResult.endTime();
             return this.reportResult;
         }
