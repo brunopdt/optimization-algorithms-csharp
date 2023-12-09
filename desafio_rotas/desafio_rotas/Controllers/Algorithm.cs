@@ -14,7 +14,7 @@ namespace desafio_rotas.Controllers
         }
 
         [HttpPost("/greedy")]
-        public List<ReportResult> greedy([FromBody] GreedyAlgorithmDTO dto)
+        public List<ReportResult> Greedy([FromBody] GreedyAlgorithmDTO dto)
         {
             Transporter transporter;
             Greedy greedy;
@@ -30,6 +30,26 @@ namespace desafio_rotas.Controllers
                 else
                     currentReportResult = greedy.DistributeRoutes2ndAlgorithm();
 
+                report.addResult(currentReportResult);
+            });
+            DataApplication.reports.Add(report);
+
+            return report.results;
+        }
+
+        [HttpPost("/dynamicprogramming")]
+        public List<ReportResult> DynamicProgramming([FromBody] DynamicProgrammingDTO dto)
+        {
+            Transporter transporter;
+            DynamicProgramming dynamicProgramming;
+            ReportResult currentReportResult;
+            Report report = new("Algoritmo Programação dinamica", "", "Escolhe a melhor opção no momento da iteração, entretanto, não garante o resultado ótimo");
+
+            DataApplication.baseRoutes.ForEach(route =>
+            {
+                transporter = new(dto.truckAmount, route.ToList());
+                dynamicProgramming = new(transporter);
+                currentReportResult = dynamicProgramming.RunMethod();
                 report.addResult(currentReportResult);
             });
             DataApplication.reports.Add(report);

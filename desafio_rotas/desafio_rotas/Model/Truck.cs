@@ -14,7 +14,12 @@
             this.routes.Add(route);
             SumRoutes();
         }
-        
+        public void AddRoute(List<int> routes)
+        {
+            this.routes = routes;
+            SumRoutes();
+        }
+
         private void SumRoutes() => this.totalRoute = this.routes.Sum();
 
 
