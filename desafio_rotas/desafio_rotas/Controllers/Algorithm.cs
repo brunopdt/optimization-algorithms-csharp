@@ -7,13 +7,9 @@ namespace desafio_rotas.Controllers
     [Route("algorithm")]
     public class Algorithm : ControllerBase
     {
-        [HttpGet]
-        public void divisionConquest()
+        [HttpGet("/divideAndConquer")]
+        public void divideAndConquer()
         {
-            Transporter tranporter = new Transporter(3, [ 35, 34, 33, 23, 21, 32, 35, 19, 26, 42 ]);
-            DivisionConquest division = new(tranporter);
-            division.divisaoConquista();
-
         }
     }
 }

@@ -9,7 +9,7 @@
             this.routes = new();
         }
 
-        public void addRoutes(int route)
+        public void addRoute(int route)
         {
             this.routes.Add(route);
             sumRoutes();

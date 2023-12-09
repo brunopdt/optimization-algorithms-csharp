@@ -16,7 +16,6 @@ namespace desafio_rotas.Controllers
         {
             DataApplication.baseRoutes = ProblemGenerator.generateRoutes(quantRoutes, sizeSet, dispersion);
             return DataApplication.baseRoutes;
-
         }
 
     }

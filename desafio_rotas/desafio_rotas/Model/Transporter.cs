@@ -5,9 +5,9 @@ namespace desafio_rotas.Model
     public class Transporter
     {
         public static double tolerance { get; } = 0.1;
-        public double averageRoutes { get; set; }
+        public double averageTruckRoutes { get; set; }
         public int sumRoutes { get; set; }
-        public int[] routes { get; set; }
+        public List<int> routes { get; set; }
         public List<Truck> listTruck { get; set; }
         public Transporter(int quantityTrucks, int[] routes) { 
             this.listTruck = new List<Truck>();
@@ -22,15 +22,15 @@ namespace desafio_rotas.Model
             }
             return this.listTruck;
         }
-        public int[] addRoutes(int[] routes)
+        public List<int> addRoutes(List<int> routes)
         {
            
             this.routes = routes;
-            this.averageRoutes = this.getAverageRoutes();
+            this.averageTruckRoutes = this.getAverageTruckRoutes();
             this.sumRoutes = this.getSumRoutes();
             return this.routes;
         }
-        private double getAverageRoutes() => this.routes.Average();
+        private double getAverageTruckRoutes() => Math.Ceiling(Convert.ToDouble(this.routes.Sum() / this.listTruck.Count) );
         private int getSumRoutes() => this.routes.Sum();
     }
 }
