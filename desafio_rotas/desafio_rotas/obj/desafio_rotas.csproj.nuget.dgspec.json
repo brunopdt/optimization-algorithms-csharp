@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj": {}
+    "D:\\Projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj": {}
   },
   "projects": {
-    "C:\\projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj": {
+    "D:\\Projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj",
+        "projectUniqueName": "D:\\Projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj",
         "projectName": "desafio_rotas",
-        "projectPath": "C:\\projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj",
-        "packagesPath": "C:\\Users\\eduardo.brito\\.nuget\\packages\\",
-        "outputPath": "C:\\projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\obj\\",
+        "projectPath": "D:\\Projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\desafio_rotas.csproj",
+        "packagesPath": "C:\\Users\\edubr\\.nuget\\packages\\",
+        "outputPath": "D:\\Projetos\\fpaa-tp-2023\\desafio_rotas\\desafio_rotas\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\eduardo.brito\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\edubr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

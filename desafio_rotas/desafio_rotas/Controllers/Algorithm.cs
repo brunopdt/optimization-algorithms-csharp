@@ -8,12 +8,11 @@ namespace desafio_rotas.Controllers
     public class Algorithm : ControllerBase
     {
         [HttpGet]
-        public List<Truck> divisionConquest()
+        public void divisionConquest()
         {
-            Transporter tranporter = new Transporter(3, [ 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 ]);
+            Transporter tranporter = new Transporter(3, [ 35, 34, 33, 23, 21, 32, 35, 19, 26, 42 ]);
             DivisionConquest division = new(tranporter);
             division.divisaoConquista();
-            return tranporter.listTruck;
 
         }
     }
