@@ -1,0 +1,47 @@
+:root {
+  --texto: #e4e6f4de;
+  --textoTopico: rgb(0, 183, 255);
+  --fundo: rgb(37, 41, 60);
+  --fundo2: rgb(47, 51, 73);
+}
+.MuiPaper-root {
+  background-color: var(--fundo2);
+  border: 1px solid rgba(104, 102, 102, 0.325);
+  color: white !important;
+}
+.MuiAccordionSummary-expandIconWrapper {
+  color: white;
+}
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+  background-color: var(--fundo2) !important;
+}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+  border-color: rgba(128, 128, 128, 0.87);
+}
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root,
+.MuiFormLabel-root {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+body {
+  background-color: var(--fundo);
+}
+div {
+  color: var(--texto);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.349);
+  color: #fff;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c4d0f786;
+  border-radius: 10px;
+  height: 30%;
+  transition: background-color 0.5s ease-in-out;
+}

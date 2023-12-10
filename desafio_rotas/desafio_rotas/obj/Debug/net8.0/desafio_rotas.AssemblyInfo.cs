@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("desafio_rotas")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+beb6f81a88c3653d3b5bae76258186c94d4d1a6b")]
 [assembly: System.Reflection.AssemblyProductAttribute("desafio_rotas")]
 [assembly: System.Reflection.AssemblyTitleAttribute("desafio_rotas")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
