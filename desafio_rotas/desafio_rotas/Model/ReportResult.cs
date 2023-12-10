@@ -2,23 +2,19 @@
 
 namespace desafio_rotas.Model
 {
-    public class ReportResult
+    public class ReportResult(Transporter transporter)
     {
-        public double timeSpentMS { get; set; }
-        public Transporter transporter { get; set; }
+        public TimeSpan timeSpentMS { get; set; }
+        public Transporter transporter { get; set; } = transporter;
 
-        private Stopwatch timer;
+        private Stopwatch timer = new Stopwatch();
 
-        public ReportResult(Transporter transporter)
-        {
-            this.timer = new Stopwatch();
-            this.transporter = transporter;
-        }
         public void startTime() => timer.Start();
         public void endTime()
         {
             timer.Stop();
-            this.timeSpentMS = timer.ElapsedMilliseconds / 1000;
+            this.timeSpentMS = timer.Elapsed;
+
         }
     }
 }

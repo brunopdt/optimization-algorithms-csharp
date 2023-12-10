@@ -8,7 +8,7 @@ namespace desafio_rotas.Model
         public string behavior { get; } 
         public string algorithm { get; }
         public DateTime dateTime { get; }
-        public double averageTime { get; set; }
+        public TimeSpan averageTime { get; set; }
 
         public List<ReportResult> results { get; set; }
         public Report(string algorithm, string reason, string behavior) { 
@@ -22,7 +22,8 @@ namespace desafio_rotas.Model
         public void addResult(ReportResult result)
         {
             this.results.Add(result);
-            this.averageTime = results.Average(x => x.timeSpentMS);
+            double average = results.Average(x => x.timeSpentMS.Microseconds);
+            this.averageTime = TimeSpan.FromMicroseconds(average);
         }
     }   
 }

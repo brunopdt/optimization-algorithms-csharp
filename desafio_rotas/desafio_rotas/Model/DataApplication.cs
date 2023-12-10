@@ -6,6 +6,6 @@ namespace desafio_rotas.Model
     public static class DataApplication
     {
         public static List<Report> reports = new();
-        public static List<int[]> baseRoutes = new();
+        public static List<int[]> baseRoutes = ProblemGenerator.generateRoutes(10,2,1);
     }
 }
