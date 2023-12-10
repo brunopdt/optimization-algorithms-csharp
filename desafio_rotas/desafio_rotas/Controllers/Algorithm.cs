@@ -8,9 +8,24 @@ namespace desafio_rotas.Controllers
     [Route("algorithm")]
     public class Algorithm : ControllerBase
     {
-        [HttpGet("/divide-and-conquer")]
-        public void divideAndConquer()
+        [HttpPost("/divide-and-conquer")]
+        public Report divideAndConquer([FromBody] BaseAlgorithmDTO dto)
         {
+            Transporter transporter;
+            DivideAndConquer divideAndConquer;
+            ReportResult currentReportResult;
+            Report report = new("Algoritmo Divisão e conquista", "", "Cria uma tabela com os possíveis resultados e retorna o resultado ótimo");
+
+            DataApplication.baseRoutes.ForEach(route =>
+            {
+                transporter = new(dto.truckAmount, route.ToList());
+                divideAndConquer = new(transporter);
+                currentReportResult = divideAndConquer.DistributeRoutes();
+                report.addResult(currentReportResult);
+            });
+            DataApplication.reports.Add(report);
+
+            return report;
         }
 
         [HttpPost("/greedy")]
@@ -38,7 +53,7 @@ namespace desafio_rotas.Controllers
         }
 
         [HttpPost("/dynamic-programming")]
-        public Report DynamicProgramming([FromBody] DynamicProgrammingDTO dto)
+        public Report DynamicProgramming([FromBody] BaseAlgorithmDTO dto)
         {
             Transporter transporter;
             DynamicProgramming dynamicProgramming;

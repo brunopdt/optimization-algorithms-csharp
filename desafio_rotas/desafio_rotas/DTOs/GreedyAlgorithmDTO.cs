@@ -1,8 +1,7 @@
 namespace desafio_rotas.DTOs
 {
-    public class GreedyAlgorithmDTO
+    public class GreedyAlgorithmDTO : BaseAlgorithmDTO
     {
         public int method { get; set; }
-        public int truckAmount { get; set; }
     }
 }

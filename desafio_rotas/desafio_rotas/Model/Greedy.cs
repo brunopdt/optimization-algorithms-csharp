@@ -26,13 +26,13 @@ public class Greedy(Transporter transporter)
         {
             int targetTruckIndex = i % this.transporter.trucks.Count;
 
-            if (sortedRoutes[i] > this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes * this.transporter.tolerance)
+            if (sortedRoutes[i] > this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes)
             {
                 this.transporter.trucks[targetTruckIndex].AddRoute(sortedRoutes[i]);
             }
             else
             {
-                while (this.transporter.trucks[targetTruckIndex].totalRoute + sortedRoutes[i] <= this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes * this.transporter.tolerance)
+                while (this.transporter.trucks[targetTruckIndex].totalRoute + sortedRoutes[i] <= this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes)
                 {
                     this.transporter.trucks[targetTruckIndex].AddRoute(sortedRoutes[i]);
                 }

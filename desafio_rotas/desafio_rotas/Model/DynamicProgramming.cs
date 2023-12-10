@@ -118,6 +118,7 @@ namespace desafio_rotas.Model
 
         public ReportResult RunMethod()
         {
+            transporter.alterTolerance(0.05);
             reportResult.startTime();
             int[] dynamicTableLimits = DefineDynamicTableLimits();
             CloneRoutesFromTransporter();
