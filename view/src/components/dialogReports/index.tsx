@@ -18,12 +18,15 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/axios/useApi";
 import { format } from "date-fns";
 
-export const DialogReports = () => {
-  const [open, setOpen] = useState(false);
+export const DialogReports = ({ open, setOpen }) => {
   const queryReports = useQuery(["reports"], async () => {
     return await api.get("/report").then(({ data }) => data);
   });
 
+  const resetReport = async () => {
+    await api.delete("/report");
+    queryReports.refetch();
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -162,15 +165,30 @@ export const DialogReports = () => {
           ))}
         </DialogContent>
         <DialogActions>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={<IconifyIcon icon={"mdi:close"} />}
-            onClick={handleClose}
-            fullWidth
-          >
-            Fechar
-          </Button>
+          <Grid container spacing={3}>
+            <Grid item md={6}>
+              <Button
+                variant="outlined"
+                color="warning"
+                startIcon={<IconifyIcon icon={"mdi:reload"} />}
+                onClick={() => resetReport()}
+                fullWidth
+              >
+                Resetar
+              </Button>
+            </Grid>
+            <Grid item md={6}>
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={<IconifyIcon icon={"mdi:close"} />}
+                onClick={handleClose}
+                fullWidth
+              >
+                Fechar
+              </Button>
+            </Grid>
+          </Grid>
         </DialogActions>
       </Dialog>
     </>

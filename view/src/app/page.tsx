@@ -4,6 +4,8 @@ import api from "@/axios/useApi";
 import { DialogGenerateRoutes } from "@/components/dialogGenerateRoutes";
 import { DialogReports } from "@/components/dialogReports";
 import IconifyIcon from "@/components/icon";
+import { avisoPadrao, avisoPadraoToast } from "@/components/sweetalert2";
+import { queryClient } from "@/services/reactQuery.service";
 import {
   Button,
   Card,
@@ -14,12 +16,41 @@ import {
   ListItem,
   TextField,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 export default function Home() {
   const queryRoutes = useQuery(["rotas"], async () => {
     return await api.get("/routes").then(({ data }) => data);
   });
+
+  const [open, setOpen] = useState(false);
+
+  let mutationAlgoritimoReq = useMutation({
+    mutationFn: (data: string) => {
+      return api
+        .post(`/${data}`, { truckAmount, method })
+        .then(({ data }) => {});
+    },
+    onSuccess: (data) => {
+      queryClient.refetchQueries(["reports"]);
+      setOpen(true);
+      avisoPadraoToast.fire({
+        title: "Sucesso",
+        text: `Relatorio gerado com sucesso.`,
+      });
+    },
+    onError: ({ response }) => {
+      avisoPadrao.fire({
+        icon: "error",
+        title: "Atenção",
+        text: "Erro inesperado!",
+      });
+    },
+  });
+
+  const [truckAmount, setTruckAmount] = useState(3);
+  const [method, setMethod] = useState(1);
   if (queryRoutes.isLoading) return <></>;
   return (
     <>
@@ -58,6 +89,8 @@ export default function Home() {
                 type="number"
                 fullWidth
                 variant="outlined"
+                defaultValue={truckAmount}
+                onKeyUp={(e) => setTruckAmount(e.target?.value as number)}
               />
             </Grid>
             <Grid item md={6}>
@@ -68,7 +101,9 @@ export default function Home() {
                 label="Variação do metodo"
                 type="number"
                 fullWidth
+                defaultValue={method}
                 variant="outlined"
+                onKeyUp={(e) => setMethod(e.target?.value as number)}
               />
             </Grid>
           </Grid>
@@ -83,6 +118,9 @@ export default function Home() {
                 variant="outlined"
                 color="success"
                 fullWidth
+                onClick={() =>
+                  mutationAlgoritimoReq.mutate("divide-and-conquer")
+                }
                 startIcon={
                   <IconifyIcon icon={"tdesign:component-divider-vertical"} />
                 }
@@ -95,6 +133,7 @@ export default function Home() {
                 variant="outlined"
                 color="error"
                 fullWidth
+                onClick={() => mutationAlgoritimoReq.mutate("greedy")}
                 startIcon={<IconifyIcon icon={"icon-park-twotone:data-all"} />}
               >
                 Guloso
@@ -105,6 +144,9 @@ export default function Home() {
                 variant="outlined"
                 color="info"
                 fullWidth
+                onClick={() =>
+                  mutationAlgoritimoReq.mutate("dynamic-programming")
+                }
                 startIcon={
                   <IconifyIcon icon={"icon-park-outline:positive-dynamics"} />
                 }
@@ -117,6 +159,7 @@ export default function Home() {
                 variant="outlined"
                 color="warning"
                 fullWidth
+                onClick={() => mutationAlgoritimoReq.mutate("backtracking")}
                 startIcon={<IconifyIcon icon={"ph:git-diff-thin"} />}
               >
                 Backtracking
@@ -125,7 +168,7 @@ export default function Home() {
           </Grid>
         </CardContent>
       </Card>
-      <DialogReports />
+      <DialogReports open={open} setOpen={setOpen} />
     </>
   );
 }

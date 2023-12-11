@@ -4,6 +4,9 @@ import "./globals.css";
 import { Box, Container, Typography } from "@mui/material";
 import { queryClient } from "../services/reactQuery.service";
 import IconifyIcon from "@/components/icon";
+// ** Sweet Alert Dark Theme
+// import "../styles/custom/dark-theme.scss";
+
 export default function RootLayout({
   children,
 }: {

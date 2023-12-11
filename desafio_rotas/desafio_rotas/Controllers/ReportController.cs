@@ -8,6 +8,8 @@ namespace desafio_rotas.Controllers
     public class ReportController : ControllerBase
     {
         [HttpGet]
-        public List<Report> getReports() => DataApplication.reports;
+        public List<Report> getReports() => DataApplication.reports.OrderByDescending(x=> x.dateTime).ToList();
+        [HttpDelete]
+        public List<Report> resetReport() => DataApplication.reports = new();
     }
 }

@@ -1,4 +1,5 @@
-﻿using desafio_rotas.Model;
+﻿using desafio_rotas.DTOs;
+using desafio_rotas.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace desafio_rotas.Controllers
@@ -11,10 +12,9 @@ namespace desafio_rotas.Controllers
         public List<int[]> getRoutes() => DataApplication.baseRoutes;
 
         [HttpPost("/generate")]
-        public List<int[]> generateRoutes(int quantRoutes, int sizeSet,
-        double dispersion)
+        public List<int[]> generateRoutes([FromBody] GenerateRoutesDTO dto)
         {
-            DataApplication.baseRoutes = ProblemGenerator.generateRoutes(quantRoutes, sizeSet, dispersion);
+            DataApplication.baseRoutes = ProblemGenerator.generateRoutes(dto.quantRoutes, dto.sizeSet, dto.dispersion);
             return DataApplication.baseRoutes;
         }
 
