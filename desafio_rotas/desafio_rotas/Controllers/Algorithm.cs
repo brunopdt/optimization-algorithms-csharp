@@ -71,5 +71,25 @@ namespace desafio_rotas.Controllers
 
             return report;
         }
+
+        [HttpPost("/backtracking")]
+        public Report Backtracking([FromBody] BaseAlgorithmDTO dto)
+        {
+            Transporter transporter;
+            Backtracking backtracking;
+            ReportResult currentReportResult;
+            Report report = new("Algoritmo backtracking", "", "Cria uma tabela com os possíveis resultados e retorna o resultado ótimo");
+
+            DataApplication.baseRoutes.ForEach(route =>
+            {
+                transporter = new(dto.truckAmount, route.ToList());
+                backtracking = new(transporter);
+                currentReportResult = backtracking.RunMethod();
+                report.addResult(currentReportResult);
+            });
+            DataApplication.reports.Add(report);
+
+            return report;
+        }
     }
 }
