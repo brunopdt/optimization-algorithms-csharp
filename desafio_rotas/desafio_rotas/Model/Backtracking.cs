@@ -39,7 +39,7 @@ namespace desafio_rotas.Model
                 {
                     minDifference = currentDifference;
                     int i = 0;
-                    foreach(Truck truck in transporter.trucks)
+                    foreach (Truck truck in transporter.trucks)
                     {
                         this.bestRouteDistribution[i++] = truck.routes.ToArray();
                     }
@@ -50,7 +50,12 @@ namespace desafio_rotas.Model
             foreach (Truck truck in transporter.trucks)
             {
                 truck.AddRoute(transporter.routes[idxRota]);
-                if(GetMaxDiff() <= minDifference)
+                List<int> listPendingRoutes = transporter.routes.Skip(idxRota + 1).ToList();
+                listPendingRoutes = listPendingRoutes.OrderByDescending(r => r).ToList();
+
+                int smallestRoute = listPendingRoutes.Count > 0 ? listPendingRoutes.Last() : int.MaxValue;
+                double maximumDifference = GetMaxDiff();
+                if (maximumDifference <= minDifference || maximumDifference - smallestRoute <= minDifference)
                 {
                     BacktrackingAlgorithm(idxRota + 1);
                 }
