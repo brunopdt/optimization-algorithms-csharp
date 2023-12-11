@@ -6,6 +6,7 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  TextareaAutosize,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -31,6 +32,7 @@ const schema = yup.object().shape({
 
 export const DialogGenerateRoutes = () => {
   const [open, setOpen] = useState(false);
+  const [routesPre, setRoutes] = useState<string>();
   const {
     control,
     handleSubmit,
@@ -49,13 +51,32 @@ export const DialogGenerateRoutes = () => {
     reset();
     setOpen(false);
   };
-
+  const addRoutes = () => {
+    const routes = [
+      [
+        40, 36, 38, 29, 32, 28, 31, 35, 31, 30, 32, 30, 29, 39, 35, 38, 39, 35,
+        32, 38, 32, 33, 29, 33, 29, 39, 28,
+      ],
+      [
+        32, 51, 32, 43, 42, 30, 42, 51, 43, 51, 29, 25, 27, 32, 29, 55, 43, 29,
+        32, 44, 55, 29, 53, 30, 24, 27,
+      ],
+    ];
+    api.post("/routes", { routes }).then(() => {
+      queryClient.refetchQueries(["rotas"]);
+      handleClose();
+      avisoPadraoToast.fire({
+        title: "Sucesso",
+        text: "Rotas adicionadas com sucesso",
+      });
+    });
+  };
   let mutationSalvarReq = useMutation({
     mutationFn: (data) => {
       return api.post("/generate", data).then(({ data }) => data);
     },
     onSuccess: (data) => {
-      queryClient.refetchQueries(["routes"]);
+      queryClient.refetchQueries(["rotas"]);
       handleClose();
       avisoPadraoToast.fire({
         title: "Sucesso",
@@ -140,6 +161,14 @@ export const DialogGenerateRoutes = () => {
                 />
               )}
             />
+            {/* <Typography textAlign={"center"} mb={2}>
+              Adicionar rotas
+            </Typography> */}
+            {/* <TextField
+              label="Rotas definidas"
+              fullWidth
+              onKeyUp={(e) => setRoutes(e.target.value)}
+            /> */}
           </DialogContent>
           <DialogActions>
             <Button
@@ -149,6 +178,14 @@ export const DialogGenerateRoutes = () => {
               onClick={handleClose}
             >
               Cancelar
+            </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              startIcon={<IconifyIcon icon={"mdi:plus"} />}
+              onClick={() => addRoutes()}
+            >
+              Adicionar Rotas
             </Button>
             <Button
               variant="outlined"

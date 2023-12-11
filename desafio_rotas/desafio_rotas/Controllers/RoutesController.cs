@@ -17,6 +17,12 @@ namespace desafio_rotas.Controllers
             DataApplication.baseRoutes = ProblemGenerator.generateRoutes(dto.quantRoutes, dto.sizeSet, dto.dispersion);
             return DataApplication.baseRoutes;
         }
+        [HttpPost]
+        public List<int[]> addroutes([FromBody] AddRouteDTO dto)
+        {
+            DataApplication.baseRoutes = dto.routes;
+            return dto.routes;
+        }
 
     }
 }

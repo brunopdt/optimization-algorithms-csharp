@@ -10,7 +10,7 @@ namespace desafio_rotas.Model
         public ReportResult DistributeRoutes()
         {
             this.reportResult.startTime();
-            DivideAndConquerMethod(transporter.routes.OrderBy(r => r).ToList(), transporter.trucks);
+            DivideAndConquerMethod(transporter.routes.OrderByDescending(r => r).ToList(), transporter.trucks);
             this.reportResult.endTime();
             return reportResult;
         }
