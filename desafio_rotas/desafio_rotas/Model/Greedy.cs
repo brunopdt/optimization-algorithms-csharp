@@ -20,25 +20,25 @@ public class Greedy(Transporter transporter)
     public ReportResult DistributeRoutes2ndAlgorithm()
     {
         this.reportResult.startTime();
-        var sortedRoutes = this.transporter.routes.OrderBy(r => r).Reverse().ToArray();
+        var sortedRoutesReverse = this.transporter.routes.OrderBy(r => r).ToArray();
+        int currentTruckIndex = 0;
 
-        for (int i = 0; i < sortedRoutes.Length; i++)
+        for (int i = 0; i < sortedRoutesReverse.Length; i++)
         {
-            int targetTruckIndex = i % this.transporter.trucks.Count;
-
-            if (sortedRoutes[i] > this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes)
+            if (this.transporter.trucks[currentTruckIndex].totalRoute + sortedRoutesReverse[i] <= this.transporter.averageTruckRoutes)
             {
-                this.transporter.trucks[targetTruckIndex].AddRoute(sortedRoutes[i]);
+                this.transporter.trucks[currentTruckIndex].AddRoute(sortedRoutesReverse[i]);
             }
             else
             {
-                while (this.transporter.trucks[targetTruckIndex].totalRoute + sortedRoutes[i] <= this.transporter.averageTruckRoutes + this.transporter.averageTruckRoutes)
-                {
-                    this.transporter.trucks[targetTruckIndex].AddRoute(sortedRoutes[i]);
-                }
-                targetTruckIndex = (targetTruckIndex + 1) % this.transporter.trucks.Count;
+                if (currentTruckIndex < this.transporter.trucks.Count - 1)
+                    currentTruckIndex++;
+                else currentTruckIndex = 0;
+                this.transporter.trucks[currentTruckIndex].AddRoute(sortedRoutesReverse[i]);
             }
         }
+
+
         this.reportResult.endTime();
 
         return reportResult;
