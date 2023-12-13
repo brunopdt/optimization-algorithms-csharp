@@ -1,68 +1,72 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Routing;
 namespace desafio_rotas.Model
 {
     public class Backtracking(Transporter transporter)
     {
         private Transporter transporter = transporter;
         private ReportResult reportResult = new ReportResult(transporter);
-        private double minDifference = double.MaxValue;
-        private int[][] bestRouteDistribution;
-
+        private double optimalAvg;
+        private double bestDiff;
+        private List<List<int>> allPossibleRoutes = new();
         public ReportResult RunMethod()
         {
             reportResult.startTime();
-            bestRouteDistribution = new int[transporter.trucks.Count][];
-            BacktrackingAlgorithm(0);
-            int i = 0;
+            transporter.alterTolerance(0);
+            optimalAvg = transporter.averageTruckRoutes;
+
+            List<int> routes = new(transporter.routes);
             foreach (Truck truck in transporter.trucks)
             {
-                truck.AddRoute(new List<int>(bestRouteDistribution[i++]));
+                int i = 0;
+                bestDiff = double.MaxValue;
+                foreach (int route in routes)
+                {
+                    Try(route, new List<int>(), i++, routes);
+                }
+                truck.AddRoute(allPossibleRoutes.OrderByDescending(route => Math.Abs(route.Sum() - optimalAvg)).Last());
+
+                foreach (int route in truck.routes)
+                {
+                    routes.Remove(route);
+                }
+
+                allPossibleRoutes.Clear();
             }
+
             reportResult.endTime();
             return reportResult;
         }
-
-        private double GetMaxDiff()
+        private bool CheckIfShouldPrune(int currentRouteSum, int routeCandidate)
         {
-            List<Truck> sortedTrucks = new List<Truck>(transporter.trucks);
-            sortedTrucks.Sort((Truck x, Truck y) => x.totalRoute < y.totalRoute ? 1 : -1);
-            return sortedTrucks.First().totalRoute - sortedTrucks.Last().totalRoute;
+            return currentRouteSum + routeCandidate > optimalAvg && Math.Abs(currentRouteSum + routeCandidate - optimalAvg) > bestDiff;
         }
-
-        private void BacktrackingAlgorithm(int idxRota)
+        private void Try(int candidate, List<int> currentRoute, int idxRoute, List<int> routes)
         {
-            List<int> listRoutes = transporter.routes;
-            if (idxRota == listRoutes.Count)
+            if (CheckIfShouldPrune(currentRoute.Sum(), candidate))
             {
-                double currentDifference = GetMaxDiff();
-                if (currentDifference < minDifference && transporter.trucks.Sum(truck => truck.totalRoute) == transporter.routes.Sum())
-                {
-                    minDifference = currentDifference;
-                    int i = 0;
-                    foreach (Truck truck in transporter.trucks)
-                    {
-                        this.bestRouteDistribution[i++] = truck.routes.ToArray();
-                    }
-                }
                 return;
             }
-
-            foreach (Truck truck in transporter.trucks)
+            else
             {
-                truck.AddRoute(transporter.routes[idxRota]);
-                List<int> listPendingRoutes = transporter.routes.Skip(idxRota + 1).ToList();
-                listPendingRoutes = listPendingRoutes.OrderByDescending(r => r).ToList();
-
-                int smallestRoute = listPendingRoutes.Count > 0 ? listPendingRoutes.Last() : int.MaxValue;
-                double maximumDifference = GetMaxDiff();
-                if (maximumDifference <= minDifference || maximumDifference - smallestRoute <= minDifference)
+                currentRoute.Add(candidate);
+                double curDiff = Math.Abs(currentRoute.Sum() - optimalAvg);
+                if (curDiff < bestDiff)
                 {
-                    BacktrackingAlgorithm(idxRota + 1);
+                    bestDiff = curDiff;
                 }
-                truck.RemoveRoute(transporter.routes[idxRota]);
+
+                int i = 1;
+                allPossibleRoutes.Add(new(currentRoute));
+                foreach (int route in routes.Skip(idxRoute + 1))
+                {
+                    Try(route, currentRoute, idxRoute + i, routes);
+                    i++;
+                }
+
+                currentRoute.Remove(candidate);
             }
         }
-
     }
 }
-
