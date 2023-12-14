@@ -115,7 +115,6 @@ namespace desafio_rotas.Model
 
             return solutionRoutes;
         }
-
         public ReportResult RunMethod()
         {
             transporter.alterTolerance(0.05);
